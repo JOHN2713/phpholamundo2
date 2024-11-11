@@ -2,7 +2,7 @@
 FROM php:8.0-apache
 
 # Copia el archivo index.php al contenedor
-COPY index.php /var/www/html/
+COPY app.php /var/www/html/
 
 # Asegura permisos y propiedad para Apache
 RUN chmod -R 755 /var/www/html && chown -R www-data:www-data /var/www/html
