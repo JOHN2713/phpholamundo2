@@ -2,7 +2,7 @@
 FROM php:8.0-apache
 
 # Copia el archivo PHP en el contenedor
-COPY index.php /var/www/html/
+COPY app.php /var/www/html/
 
 # Asegura que los permisos del archivo y la carpeta sean correctos
 RUN chmod -R 755 /var/www/html
