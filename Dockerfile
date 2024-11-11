@@ -1,17 +1,21 @@
-# Usa una imagen base oficial de PHP con Apache
+# Usa una imagen base de PHP con Apache
 FROM php:8.0-apache
 
-# Copia el archivo PHP en el contenedor
+# Copia el archivo index.php al contenedor
 COPY app.php /var/www/html/
 
-# Asegura que los permisos del archivo y la carpeta sean correctos
-RUN chmod -R 755 /var/www/html
+# Asegura permisos y propiedad
+RUN chmod -R 755 /var/www/html && chown -R www-data:www-data /var/www/html
 
-# Habilita PHP en Apache
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+# Configura Apache para permitir acceso al directorio raíz
+RUN echo "<Directory /var/www/html/> \n\
+    AllowOverride All \n\
+    Require all granted \n\
+</Directory>" > /etc/apache2/conf-available/custom.conf && \
+    a2enconf custom
 
-# Expone el puerto 80, que es el puerto predeterminado de Apache
+# Expone el puerto 80
 EXPOSE 80
 
-# Inicia el servidor Apache
+# Inicia Apache en el primer plano
 CMD ["apache2-foreground"]
